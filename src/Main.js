@@ -2,6 +2,7 @@ import React from 'react'
 import Sidebar from './Sidebar'
 import CanvasList from './CanvasList'
 import CanvasForm from './CanvasForm'
+import './Main.css'
 
 const Main = () => {
     return (
