@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Sidebar from './Sidebar'
 import CanvasList from './CanvasList'
+import CanvasForm from './CanvasForm'
 
 class App extends Component {
   render() {
@@ -9,6 +10,7 @@ class App extends Component {
       <div className="App">
         <Sidebar />
         <CanvasList />
+        <CanvasForm />
       </div>
     );
   }
