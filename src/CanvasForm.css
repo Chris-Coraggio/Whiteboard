@@ -2,10 +2,19 @@
     flex-grow: 1;
     padding: 0 3rem;
 }
-
-textarea {
-    border-color: #eee;
+.CanvasForm form {
+    margin: 0 auto;
+    max-width: 80rem;
+}
+input[name="title"] {
+    border: none;
+    font-size: 200%;
+    font-family: "Fauna One";
+    color: #008BF8;
+    font-weight: 400;
     width: 100%;
-    height: calc(100vh - 140px);
-    font-size: 1.3em;
+}
+
+input[name="title"] {
+    outline: none;
 }
