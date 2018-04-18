@@ -9,10 +9,11 @@ class CanvasForm extends Component {
                     <p>
                         <input type = "text"
                                name = "title"
-                               placeholder = "Canvas Title"/>
+                               placeholder = "Canvas Title"
+                        />
                     </p>
                     <p>
-                        
+                        (Canvas goes here)
                     </p>
                 </form>
             </div>

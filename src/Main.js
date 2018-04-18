@@ -4,11 +4,11 @@ import CanvasList from './CanvasList'
 import CanvasForm from './CanvasForm'
 import './Main.css'
 
-const Main = () => {
+const Main = (props) => {
     return (
         <div className = "Main">
           <Sidebar />
-          <CanvasList />
+          <CanvasList canvases={props.canvases}/>
           <CanvasForm />
         </div>
     )
