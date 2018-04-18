@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
-import Sidebar from './Sidebar'
-import CanvasList from './CanvasList'
-import CanvasForm from './CanvasForm'
+import Main from './Main'
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <Sidebar />
-        <CanvasList />
-        <CanvasForm />
+        <Main />
       </div>
     );
   }
