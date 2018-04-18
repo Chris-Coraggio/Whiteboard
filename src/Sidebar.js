@@ -5,7 +5,14 @@ const Sidebar = () => {
   // TODO: add images, make usable
   return (
     <nav className="Sidebar">
-      <p>SIDEBAR</p>
+      <div className="logo">
+         
+      </div>
+      <div>
+        <button>
+          
+        </button>
+      </div>
     </nav>
   )
 }
