@@ -8,7 +8,7 @@ const CanvasList = ({ canvases }) => {
             <h3>Your Canvases</h3>
             <ul id="canvases">
                 {Object.keys(canvases).map((canvasName) => {
-                    return <Canvas canvas={canvases[canvasName]}/>
+                    return <Canvas canvas={canvases[canvasName]} key={canvasName}/>
                 })}
             </ul>
         </div>
