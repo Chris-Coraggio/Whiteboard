@@ -1,0 +1,19 @@
+{
+  "name": "whiteboard-server",
+  "version": "1.0.0",
+  "description": "Server backend for Whiteboard CS 252 lab 6 application",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "../.git"
+  },
+  "author": "Noah-Franks",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}

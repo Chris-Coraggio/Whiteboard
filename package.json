@@ -4,7 +4,11 @@
   "homepage": "http://zoe-arbuckle.github.io/whiteboard",
   "private": true,
   "dependencies": {
+<<<<<<< HEAD
     "re-base": "^3.2.2",
+=======
+    "express": "^4.16.3",
+>>>>>>> bde4fa03db10e60fc36e48432e3fc284727843e8
     "react": "^16.3.1",
     "react-dom": "^16.3.1",
     "react-scripts": "1.1.4"
