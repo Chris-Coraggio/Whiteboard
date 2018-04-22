@@ -9,7 +9,7 @@ const Main = (props) => {
         <div className = "Main">
           <Sidebar />
           <CanvasList canvases={props.canvases}/>
-          <CanvasForm />
+          <CanvasForm addCanvas={props.addCanvas}/>
         </div>
     )
 }

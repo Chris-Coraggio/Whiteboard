@@ -16,10 +16,20 @@ class App extends Component {
     }
   }
 
+  addCanvas = (canvas) => {
+    if(!canvas.id) {
+      canvas.id = `canvas-${new Date()}`
+    }
+    const canvases = {...this.state.canvases}
+    canvases[canvas.id] = canvas
+    this.setState({ canvases })
+  }
+
   render() {
     return (
       <div className="App">
-        <Main canvases={this.state.canvases}/>
+        <Main canvases={this.state.canvases} 
+          addCanvas={this.addCanvas}/>
       </div>
     );
   }
