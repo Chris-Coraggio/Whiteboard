@@ -1,11 +1,15 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 
-const Canvas = (props) => {
+const Canvas = ({ canvas }) => {
   return(
       <li>
           <div className="canvas">
             <div className="canvas-title">
-              {props.canvas.title}
+              {canvas.title}
+            </div>
+            <div className="canvas-body">
+
             </div>
           </div>
       </li>
