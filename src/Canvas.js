@@ -8,7 +8,7 @@ const Canvas = ({ canvas }) => {
               {canvas.title}
             </div>
             <div className="canvas-body">
-
+              
             </div>
           </div>
       </li>

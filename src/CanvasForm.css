@@ -1,11 +1,17 @@
 .CanvasForm {
     flex-grow: 1;
     padding: 0 3rem;
+    background-color: white;
 }
 .CanvasForm form {
     margin: 0 auto;
     max-width: 80rem;
 }
+
+.CanvasForm canvas {
+    border: 1px solid #000000;
+}
+
 input[name="title"] {
     border: none;
     font-size: 200%;

@@ -36,9 +36,7 @@ class CanvasForm extends Component {
                                value = {this.state.canvas.title}
                         />
                     </p>
-                    <p>
-                        (Canvas goes here)
-                    </p>
+                    <canvas id="canvas-drawable"> </canvas>
                 </form>
             </div>
         )
