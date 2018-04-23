@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom'
 import './App.css';
 import Main from './Main'
 
@@ -8,10 +7,6 @@ class App extends Component {
     super();
     this.state = {
       canvases: {
-        'canvas-1': {
-          id: "canvas-1",
-          title: 'Test Canvas',
-        },
       },
     }
   }

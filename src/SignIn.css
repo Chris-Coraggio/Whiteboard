@@ -1,0 +1,30 @@
+.SignIn {
+    background-color: #008BF8;
+    border: 0;
+    border-radius: 5px;
+    color: whitesmoke;
+    display: block;
+    margin: 20px auto;
+    padding: 20px;
+    -webkit-transition: background 0.2s;
+    -o-transition: background 0.2s;
+    transition: background 0.2s;
+    font-family: 'helvetica neue', sans-serif;
+    font-size: 20px;
+    font-weight: 200;
+  }
+  
+  h3 {
+    text-align: center;
+  }
+  
+  .SignIn :hover{
+    color: white;
+  }
+  
+  div.border {
+    margin: auto;
+    width: 60%;
+    border: 2px solid #008BF8;
+    border-radius: 20px;
+  }
