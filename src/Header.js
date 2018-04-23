@@ -7,10 +7,21 @@ const Header = () => {
       <div className="logo">
          
       </div>
-      <div>
-        <button>
-          
+      <h2>WhiteBoard</h2>
+      
+      <div className = "buttons">
+        <button className="AddNote">
+          Add Note
         </button>
+        <button className="Join">
+          Join
+        </button>
+        <button className="Create">
+          Create
+        </button>
+        <select className="Dropdown">
+          <option value="show history??"> history </option>
+        </select>
       </div>
     </nav>
   )
