@@ -1,9 +1,9 @@
 import React from 'react'
-import './Sidebar.css'
+import './Header.css'
 
-const Sidebar = () => {
+const Header = () => {
   return (
-    <nav className="Sidebar">
+    <nav className="Header">
       <div className="logo">
          
       </div>
@@ -16,4 +16,4 @@ const Sidebar = () => {
   )
 }
 
-export default Sidebar
+export default Header
