@@ -3,12 +3,13 @@
 // Dependency instantiations
 var http    = require("http");
 var express = require('express');
+var path	= require('path');
 var communications = express()
 
 
 // Exogenous control variables
-var server_port = 1776
-var html_tree = '/home/noah/Documents/Classes/cs252/lab6/Whiteboard/public'
+var server_port = 1776;
+var html_tree = path.join(__dirname, '..', 'public')
 
 console.log('html root directory');
 console.log('\t' + html_tree);
