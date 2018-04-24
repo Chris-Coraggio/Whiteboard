@@ -2,9 +2,12 @@
 
 // Dependency instantiations
 var http    = require("http");
+var path    = require('path');
+var maria   = require('mariasql');
 var express = require('express');
-var path	= require('path');
 var communications = express()
+
+// MariaDB setup will go here
 
 
 // Exogenous control variables
@@ -33,6 +36,4 @@ var server = communications.listen(server_port, function() {
 
     console.log('Http running on port 1776');
 })
-
-
 
