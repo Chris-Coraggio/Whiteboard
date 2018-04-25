@@ -1,18 +1,10 @@
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
 import './CanvasForm.css'
 
 class CanvasForm extends Component {
     componentWillReceiveProps(nextProps){
         const newID = nextProps.match.params.id;
-
-        this.state = {
-            canvas: React.createRef(),
-            plots: [],
-            isActive: false,
-            occupancy: 1
-        }
-
+        
         if(newID) {
             if(newID !== this.props.current.id){
                 const canvas = nextProps.canvases[newID]
@@ -25,6 +17,17 @@ class CanvasForm extends Component {
         } else if (this.props.current.id) {
             this.props.resetCurrent()
         }
+    }
+
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            canvas: React.createRef(),
+            plots: [],
+            isActive: false,
+            occupancy: 1
+        }
 
         var pubnub = window.PUBNUB.init({
             publish_key: 'pub-c-a1f853a2-17e9-46cd-8e9c-06ac38bb9614',
@@ -32,20 +35,6 @@ class CanvasForm extends Component {
             ssl: true
         });
     }
-
-    newCanvas = () => {
-        return {
-            id: null,
-            title: '',
-        }
-    }
-
-    // handleChanges = (ev) => {
-    //     const canvas = {...this.state.canvas}
-    //     canvas['title'] = ev.target.value
-    //     this.setState({ canvas }, 
-    //         () => this.props.addCanvas(this.state.canvas))   
-    // }
 
     draw = (e) =>{
         if(!this.state.isActive) return;
@@ -59,8 +48,8 @@ class CanvasForm extends Component {
         console.log(rect);
 
         // cross-browser canvas coordinates
-        var x = e.screenX; //e.offsetX //|| e.layerX - this.state.canvas.offsetX;
-        var y = e.screenY; //e.offsetY //|| e.layerY - this.state.canvas.offsetY;
+        var x = e.offsetX //|| e.layerX - this.state.canvas.offsetX;
+        var y = e.offsetY //|| e.layerY - this.state.canvas.offsetY;
 
         console.log(x, y);
 
@@ -143,7 +132,11 @@ class CanvasForm extends Component {
                                value = {this.props.current.title}
                         />
                     </p>
-                    <canvas ref="canvas" id="canvas-drawable" context=""onMouseDown={this.startDraw.bind(this)} onMouseMove={this.draw.bind(this)} onMouseUp={this.endDraw.bind(this)}> </canvas>
+                    <canvas ref="canvas" id="canvas-drawable" 
+                        context=""onMouseDown={this.startDraw.bind(this)} 
+                        onMouseMove={this.draw.bind(this)} 
+                        onMouseUp={this.endDraw.bind(this)}> 
+                    </canvas>
                 </form>
             </div>
         )
