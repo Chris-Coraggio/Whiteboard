@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import './App.css';
 import Main from './Main'
+import SignIn from './SignIn';
 
 class App extends Component {
   constructor() {
@@ -36,9 +38,17 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Main canvases={this.state.canvases} 
-          addCanvas={this.addCanvas}/>
-        <p className="App-intro">{this.state.response}</p>
+        <Switch>
+          <Route path="/canvases" render={() => (
+            <Main canvases={this.state.canvases} 
+              addCanvas={this.addCanvas}/>
+            //<p className="App-intro">{this.state.response}</p>
+          )} />
+          <Route path="/sign-in" render={() => (
+            <SignIn />
+          )} />
+          <Route render={() => <Redirect to="/canvases" />} />
+        </Switch>
       </div>
     );
   }

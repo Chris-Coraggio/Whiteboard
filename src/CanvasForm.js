@@ -10,18 +10,18 @@ class CanvasForm extends Component {
         }
     }
 
-    newCanvas = () => {
-        return {
-            id: null,
-            title: '',
-        }
-    }
-
     handleChanges = (ev) => {
         const canvas = {...this.state.canvas}
         canvas['title'] = ev.target.value
         this.setState({ canvas }, 
             () => this.props.addCanvas(this.state.canvas))   
+    }
+
+    newCanvas = () => {
+        return {
+            id: null,
+            title: '',
+        }
     }
 
     render() {
