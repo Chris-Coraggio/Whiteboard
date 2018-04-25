@@ -6,4 +6,6 @@
 * create user 'profiler'@'127.0.0.1';
 * GRANT ALL PRIVILEGES ON profiles TO 'profiler'@'hostname' IDENTIFIED BY 'adatabaseforhumans^';
 * sudo mysql_setpermission
+* use profiles
+* insert into humanity values ('Noah, 'password', 'Noah.txt')
 * 

@@ -7,16 +7,35 @@ var maria   = require('mariasql');
 var express = require('express');
 var communications = express()
 
-// MariaDB setup will go here
+// MariaDB profiler
 var profiler = new maria({
+    db       : 'profiles',
     host     : 'localhost',
     user     : 'profiler',
-    password : 'adatabaseforhumans^',
+    password : ''
 });
 
-profiler.query('SHOW DATABASES', function(err, rows) {
-    console.dir(rows);
-});
+console.log('MariaDB manager established\n');
+
+profiler.query('USE profiles;', function(err, rows) {});
+
+function register(username, password) {
+
+    var registration_string;
+    registration_string  = 'INSERT INTO humanity VALUES (\'';
+    registration_string += username + '\', \'';
+    registration_string += password + '\', \'';
+    registration_string += username + '.txt\');';
+
+    console.log('Registration request:');
+    console.log('\t' + registration_string);
+    
+    profiler.query(registration_string, function(err, rows) {});
+}
+
+register('Zoe', 'wordpass');
+
+
 
 profiler.end();
     
