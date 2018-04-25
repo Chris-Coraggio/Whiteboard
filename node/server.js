@@ -8,7 +8,18 @@ var express = require('express');
 var communications = express()
 
 // MariaDB setup will go here
+var profiler = new maria({
+    host     : 'localhost',
+    user     : 'profiler',
+    password : 'adatabaseforhumans^',
+});
 
+profiler.query('SHOW DATABASES', function(err, rows) {
+    console.dir(rows);
+});
+
+profiler.end();
+    
 
 // Exogenous control variables
 var server_port = 1776;
