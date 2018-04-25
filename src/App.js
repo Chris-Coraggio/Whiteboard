@@ -8,9 +8,10 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      canvases: {
-      },
-      reponse: ''
+      uid: null,
+      canvases: {},
+      reponse: '',
+      current: this.newCanvas(),
     }
   }
   componentDidMount() {
@@ -26,16 +27,34 @@ class App extends Component {
     return body;
   };
 
+  newCanvas = () => {
+    return {
+        id: null,
+        title: '',
+    }
+  }
+
   addCanvas = (canvas) => {
     if(!canvas.id) {
-      canvas.id = `canvas-${new Date()}`
+      canvas.id = `canvas-${Date.now()}`
     }
     const canvases = {...this.state.canvases}
     canvases[canvas.id] = canvas
-    this.setState({ canvases })
+    this.setState({ 
+      canvases,
+      current: canvas,
+     })
   }
 
   render() {
+    const functions = {
+      addCanvas: this.addCanvas,
+    }
+    const data = {
+      canvases: this.state.canvases,
+      current: this.state.current,
+    }
+
     return (
       <div className="App">
         <Switch>

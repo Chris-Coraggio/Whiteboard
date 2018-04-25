@@ -6,7 +6,10 @@ class CanvasForm extends Component {
         super(props)
 
         this.state = {
-            canvas: this.newCanvas(),
+            canvas: {
+                id: null,
+                title: '',
+            },
         }
     }
 
@@ -15,13 +18,6 @@ class CanvasForm extends Component {
         canvas['title'] = ev.target.value
         this.setState({ canvas }, 
             () => this.props.addCanvas(this.state.canvas))   
-    }
-
-    newCanvas = () => {
-        return {
-            id: null,
-            title: '',
-        }
     }
 
     render() {
