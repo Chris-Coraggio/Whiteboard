@@ -9,7 +9,8 @@ class CanvasForm extends Component {
         this.state = {
             canvas: React.createRef(),
             plots: [],
-            isActive: false
+            isActive: false,
+            occupancy: 1
         }
 
         if(newID) {
@@ -24,6 +25,12 @@ class CanvasForm extends Component {
         } else if (this.props.current.id) {
             this.props.resetCurrent()
         }
+
+        var pubnub = window.PUBNUB.init({
+            publish_key: 'pub-c-a1f853a2-17e9-46cd-8e9c-06ac38bb9614',
+            subscribe_key: 'sub-c-09104eee-3e7c-11e8-8ce7-1294c71dad07',
+            ssl: true
+        });
     }
 
     newCanvas = () => {
@@ -62,6 +69,13 @@ class CanvasForm extends Component {
         this.drawOnCanvas(this.state.plots);
     }
 
+    drawFromDataStream = (stream) => {
+        //take data from the server and plot it
+
+        if(!stream) return;
+        this.drawOnCanvas(stream.plots);
+    }
+
     drawOnCanvas = (color) => {
         //this.context is the canvas object thanks to the ref field in the canvas element
         //not sure what color does
@@ -87,6 +101,27 @@ class CanvasForm extends Component {
         //post the plot to the server
         this.setState({plots: []});
         console.log("Stopped drawing!");
+    }
+
+    publish = (board_name, plots) => {
+       this.pubnub.publish({
+            channel: board_name,
+            message: { 
+                plots: plots // your array goes here
+            } 
+        });
+    }
+
+    subscribe = (board_name) => {
+       this.pubnub.subscribe({
+            channel: board_name,
+            //callback: {drawFromDataStream}
+            //after getting the changes from the server, populates the canvas
+        });
+
+        // presence = (m) =>{ //grabs the occupancy from pubnub
+        //     this.setState({occupancy: m.occupancy});
+        // };
     }
 
     handleChanges = (ev) => {
