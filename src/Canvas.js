@@ -1,7 +1,9 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 
 const Canvas = ({ canvas }) => {
   return(
+    <NavLink to={`/canvases/${canvas.id}`} >
       <li>
           <div className="canvas">
             <div className="canvas-title">
@@ -12,6 +14,7 @@ const Canvas = ({ canvas }) => {
             </div>
           </div>
       </li>
+    </NavLink>
   )
 }
 

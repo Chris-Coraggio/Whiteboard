@@ -1,4 +1,5 @@
 import React from 'react'
+import { Switch, Route } from 'react-router-dom'
 import Header from './Header'
 import CanvasList from './CanvasList'
 import CanvasForm from './CanvasForm'
@@ -9,8 +10,15 @@ const Main = (props) => {
         <div className = "Main">
           <Header />
           <div className = "Content">
-              <CanvasList canvases={props.canvases}/>
-              <CanvasForm addCanvas={props.addCanvas}/>
+            <CanvasList canvases={props.canvases}/>
+            <Switch>
+                <Route path="/canvases/:id" render={() => (
+                    <CanvasForm addCanvas={props.addCanvas}/>
+                )} />
+                <Route path="/canvases" render={() => (
+                    <CanvasForm addCanvas={props.addCanvas}/>
+                )} />
+            </Switch>
           </div>
         </div>
     )

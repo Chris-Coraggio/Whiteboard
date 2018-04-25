@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import './Header.css'
 
 const Header = () => {
@@ -10,11 +11,13 @@ const Header = () => {
       <h2>WhiteBoard</h2>
       
       <div className = "buttons">
+        <Link to="/canvases" className="new-canvas">
+          <button className="Create">
+            Create
+          </button>
+        </Link>
         <button className="Join">
           Join
-        </button>
-        <button className="Create">
-          Create
         </button>
         <button className="History">
           History
