@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
+import PubNubReact from 'pubnub-react';
 import './CanvasForm.css'
 
 class CanvasForm extends Component {
     componentWillReceiveProps(nextProps){
         const newID = nextProps.match.params.id;
-        
+
         if(newID) {
             if(newID !== this.props.current.id){
                 const canvas = nextProps.canvases[newID]
@@ -26,14 +27,18 @@ class CanvasForm extends Component {
             canvas: React.createRef(),
             plots: [],
             isActive: false,
-            occupancy: 1
+            occupancy: 1,
+            currentBoardTitle: "Test"
         }
 
-        var pubnub = window.PUBNUB.init({
-            publish_key: 'pub-c-a1f853a2-17e9-46cd-8e9c-06ac38bb9614',
-            subscribe_key: 'sub-c-09104eee-3e7c-11e8-8ce7-1294c71dad07',
-            ssl: true
+        this.pubnub = new PubNubReact({
+            publish_key: 'pub-c-fdea4d55-93be-4473-96c6-83b19bcdedd2',
+            subscribe_key: 'sub-c-4000d272-48bb-11e8-baa8-3e57c26d13ec',
+            ssl: true,
+            logVerbosity: true,
+            uuid: "demo"
         });
+        this.pubnub.init(this);
     }
 
     draw = (e) =>{
@@ -41,17 +46,17 @@ class CanvasForm extends Component {
 
         e = e.nativeEvent;
 
-        console.log(e);
+        //console.log(e);
 
         var rect = this.refs.canvas.getBoundingClientRect();
 
-        console.log(rect);
+        //console.log(rect);
 
         // cross-browser canvas coordinates
         var x = e.offsetX //|| e.layerX - this.state.canvas.offsetX;
         var y = e.offsetY //|| e.layerY - this.state.canvas.offsetY;
 
-        console.log(x, y);
+        //console.log(x, y);
 
         this.state.plots.push({x: x, y: y});
 
@@ -81,40 +86,52 @@ class CanvasForm extends Component {
 
     startDraw = () => {
         this.setState({isActive: true});
-        console.log("Drawing!");
+        //console.log("Drawing!");
     }
 
     endDraw = () => {
         this.setState({isActive: false});
 
         //post the plot to the server
+        //publish the plots
+        this.publish(this.state.currentBoardTitle, this.state.plots);
         this.setState({plots: []});
-        console.log("Stopped drawing!");
+        //console.log("Stopped drawing!");
     }
 
     publish = (board_name, plots) => {
-       this.pubnub.publish({
+        this.pubnub.publish({
+            plots: plots,
             channel: board_name,
-            message: { 
-                plots: plots // your array goes here
-            } 
+            message: "Yo"
         });
+        console.log("Publishing");
+        // console.log(board_name);
+        // console.log(plots);
+        // console.log(this.pubnub);
     }
 
-    subscribe = (board_name) => {
+    subscribe = () => {
+       if(console.log(this.state.currentBoardTitle) === ""){
+        console.log("No name");
+        return;
+    }
        this.pubnub.subscribe({
-            channel: board_name,
-            //callback: {drawFromDataStream}
-            //after getting the changes from the server, populates the canvas
+            channels: [this.state.currentBoardTitle],
+            withPresence: true
         });
 
-        // presence = (m) =>{ //grabs the occupancy from pubnub
-        //     this.setState({occupancy: m.occupancy});
-        // };
+       this.pubnub.getMessage(this.state.currentBoardTitle, (msg) => {
+            console.log("Received from room: " + msg);
+            this.drawFromDataStream(msg.plots);
+        });
     }
 
     handleChanges = (ev) => {
         const canvas = {...this.props.current}
+        console.log(this.props.current.title);
+        this.setState({currentBoardTitle: this.props.current.title});
+        this.subscribe(this.props.current.title);
         canvas['title'] = ev.target.value
         this.props.save(canvas) 
     }
@@ -133,7 +150,7 @@ class CanvasForm extends Component {
                         />
                     </p>
                     <canvas ref="canvas" id="canvas-drawable" 
-                        context=""onMouseDown={this.startDraw.bind(this)} 
+                        onMouseDown={this.startDraw.bind(this)} 
                         onMouseMove={this.draw.bind(this)} 
                         onMouseUp={this.endDraw.bind(this)}> 
                     </canvas>
