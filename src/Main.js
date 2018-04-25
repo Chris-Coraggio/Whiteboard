@@ -8,7 +8,7 @@ import './Main.css'
 const Main = (props) => {
     return (
         <div className = "Main">
-          <Header />
+          <Header signOut={props.signOut}/>
           <div className = "Content">
             <CanvasList canvases={props.canvases}/>
             <Switch>

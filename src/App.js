@@ -34,6 +34,14 @@ class App extends Component {
     }
   }
 
+  signedIn = () =>{
+    return (this.state.uid)
+  }
+
+  signOut = () => {
+    console.log("signing out!")
+  }
+
   save = (canvas) => {
     let redirect = false
     if(!canvas.id) {
@@ -64,6 +72,7 @@ class App extends Component {
       save: this.save,
       setCurrent: this.setCurrent,
       resetCurrent: this.resetCurrent,
+      signOut: this.signOut,
     }
     const data = {
       canvases: this.state.canvases,
@@ -74,12 +83,16 @@ class App extends Component {
       <div className="App">
         <Switch>
           <Route path="/canvases" render={() => (
-            <Main {...functions} 
-              {...data}/>
-            //<p className="App-intro">{this.state.response}</p>
+            this.signedIn() ? 
+              <Main {...functions} 
+                {...data}/>
+              //<p className="App-intro">{this.state.response}</p>
+              : <Redirect to="/sign-in" />
           )} />
           <Route path="/sign-in" render={() => (
-            <SignIn />
+            !this.signedIn() ?
+              <SignIn />
+              : <Redirect to="/canvases" />
           )} />
           <Route render={() => <Redirect to="/canvases" />} />
         </Switch>

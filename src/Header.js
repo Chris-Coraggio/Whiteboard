@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import './Header.css'
 
-const Header = () => {
+const Header = ({signOut}) => {
   return (
     <nav className="Header">
       <div className="logo">
@@ -22,7 +22,7 @@ const Header = () => {
         <button className="History">
           History
         </button>
-        <button className="SignOut">
+        <button className="SignOut" onClick={signOut}>
           SignOut
         </button>
       </div>
