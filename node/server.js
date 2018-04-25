@@ -19,44 +19,45 @@ console.log('MariaDB manager established\n');
 
 profiler.query('USE profiles;', function(err, rows) {});
 
-function user_exists(username, callback) {
+function user_exists(username, password, callback) {
     // Checks the database for an entry matching the username
     // Returns whether the user is in the database
     
     var check_string = 'SELECT 1 FROM humanity WHERE username = \'' + username + '\';';
     var result = profiler.query(check_string, function(err, rows) {
-        callback(rows.info.numRows > 0);
+        callback(username, password, rows.info.numRows > 0);
     });
 }
 
+
 function register(username, password) {
     // Adds the user to the database
-    // Returns the success status
-
-    user_exists(username, function(
-    
-    console.log('USER: ' + user_exists(username));
-    return;
-    if (user_exists(username)) {
-        // Ensure the user hasn't already been registered
-        console.log('User already registered');
-        return false;
-    }
-    
-    var registration_string;
-    registration_string  = 'INSERT INTO humanity VALUES (\'';
-    registration_string += username + '\', \'';
-    registration_string += password + '\', \'';
-    registration_string += username + '.txt\');';
+    // First part in process, see callback routine
 
     console.log('Registration request:');
-    console.log('\t' + registration_string + '\t');
     
-    profiler.query(registration_string, function(err, rows) {});
+    user_exists(username, password, function(username, password, user_already_present) {
 
-    return true;
-    }
+        if (user_already_present) {
+            console.log('\tUser already registered');
+            return;  // Could call error handling function instead
+        }
+        
+        // User is definitely new, add them now to the database
+        
+        var registration_string;
+        registration_string  = 'INSERT INTO humanity VALUES (\'';
+        registration_string += username + '\', \'';
+        registration_string += password + '\', \'';
+        registration_string += username + '.txt\');';
 
+        console.log('\t' + registration_string + '\t');
+        
+        profiler.query(registration_string, function(err, rows) {});
+
+        return true;
+    });
+}
                 
 
 register('Zoe', 'wordpass');
