@@ -8,7 +8,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      uid: "zoe",
+      uid: null,
       canvases: {},
       reponse: '',
       current: this.newCanvas(),
@@ -40,6 +40,19 @@ class App extends Component {
 
   signOut = () => {
     console.log("signing out!")
+  }
+
+  getUserFromLocalStorage = () => {
+    const uid = localStorage.getItem('uid')
+    if(!uid){
+      return
+    }
+    this.setState({ uid })
+  }
+
+  setUser = (user) => {
+    localStorage.setItem('uid', user.uid)
+    this.setState({ uid: user.uid })
   }
 
   save = (canvas) => {
