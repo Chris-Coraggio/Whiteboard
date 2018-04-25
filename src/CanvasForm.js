@@ -97,7 +97,7 @@ class CanvasForm extends Component {
                         />
                     </p>
                     <canvas ref="canvas" id="canvas-drawable" 
-                        context=""onMouseDown={this.startDraw.bind(this)} 
+                        context="" onMouseDown={this.startDraw.bind(this)} 
                         onMouseMove={this.draw.bind(this)} 
                         onMouseUp={this.endDraw.bind(this)}> 
                     </canvas>
