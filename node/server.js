@@ -19,8 +19,30 @@ console.log('MariaDB manager established\n');
 
 profiler.query('USE profiles;', function(err, rows) {});
 
-function register(username, password) {
+function user_exists(username, callback) {
+    // Checks the database for an entry matching the username
+    // Returns whether the user is in the database
+    
+    var check_string = 'SELECT 1 FROM humanity WHERE username = \'' + username + '\';';
+    var result = profiler.query(check_string, function(err, rows) {
+        callback(rows.info.numRows > 0);
+    });
+}
 
+function register(username, password) {
+    // Adds the user to the database
+    // Returns the success status
+
+    user_exists(username, function(
+    
+    console.log('USER: ' + user_exists(username));
+    return;
+    if (user_exists(username)) {
+        // Ensure the user hasn't already been registered
+        console.log('User already registered');
+        return false;
+    }
+    
     var registration_string;
     registration_string  = 'INSERT INTO humanity VALUES (\'';
     registration_string += username + '\', \'';
@@ -28,17 +50,19 @@ function register(username, password) {
     registration_string += username + '.txt\');';
 
     console.log('Registration request:');
-    console.log('\t' + registration_string);
+    console.log('\t' + registration_string + '\t');
     
     profiler.query(registration_string, function(err, rows) {});
-}
+
+    return true;
+    }
+
+                
 
 register('Zoe', 'wordpass');
 
-
-
 profiler.end();
-    
+
 
 // Exogenous control variables
 var server_port = 1776;
