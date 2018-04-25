@@ -12,11 +12,13 @@ const Main = (props) => {
           <div className = "Content">
             <CanvasList canvases={props.canvases}/>
             <Switch>
-                <Route path="/canvases/:id" render={() => (
-                    <CanvasForm addCanvas={props.addCanvas}/>
+                <Route path="/canvases/:id" render={(navProps) => (
+                    <CanvasForm {...props}
+                        {...navProps}/>
                 )} />
-                <Route path="/canvases" render={() => (
-                    <CanvasForm addCanvas={props.addCanvas}/>
+                <Route path="/canvases" render={(navProps) => (
+                    <CanvasForm {...props}
+                        {...navProps}/>
                 )} />
             </Switch>
           </div>

@@ -2,22 +2,27 @@ import React, { Component } from 'react'
 import './CanvasForm.css'
 
 class CanvasForm extends Component {
-    constructor(props){
-        super(props)
+    componentWillReceiveProps(nextProps){
+        const newID = nextProps.match.params.id
 
-        this.state = {
-            canvas: {
-                id: null,
-                title: '',
-            },
+        if(newID) {
+            if(newID !== this.props.current.id){
+                const canvas = nextProps.canvases[newID]
+                if(canvas){
+                    this.props.setCurrent(canvas)
+                } else if (Object.keys(nextProps.canvases).length > 0){
+                    this.props.history.push('/canvases')
+                }
+            }
+        } else if (this.props.current.id) {
+            this.props.resetCurrent()
         }
     }
 
     handleChanges = (ev) => {
-        const canvas = {...this.state.canvas}
+        const canvas = {...this.props.current}
         canvas['title'] = ev.target.value
-        this.setState({ canvas }, 
-            () => this.props.addCanvas(this.state.canvas))   
+        this.props.save(canvas) 
     }
 
     render() {
@@ -29,7 +34,7 @@ class CanvasForm extends Component {
                                name = "title"
                                placeholder = "Canvas Title"
                                onChange={this.handleChanges}
-                               value = {this.state.canvas.title}
+                               value = {this.props.current.title}
                         />
                     </p>
                     <canvas id="canvas-drawable"> </canvas>

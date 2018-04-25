@@ -34,9 +34,11 @@ class App extends Component {
     }
   }
 
-  addCanvas = (canvas) => {
+  save = (canvas) => {
+    let redirect = false
     if(!canvas.id) {
       canvas.id = `canvas-${Date.now()}`
+      redirect = true
     }
     const canvases = {...this.state.canvases}
     canvases[canvas.id] = canvas
@@ -44,11 +46,24 @@ class App extends Component {
       canvases,
       current: canvas,
      })
+     if(redirect){
+       this.props.history.push(`/canvases/${canvas.id}`)
+     }
+  }
+
+  setCurrent = (canvas) => {
+    this.setState({current: canvas})
+  }
+
+  resetCurrent = () => {
+    this.setState({current: this.newCanvas()})
   }
 
   render() {
     const functions = {
-      addCanvas: this.addCanvas,
+      save: this.save,
+      setCurrent: this.setCurrent,
+      resetCurrent: this.resetCurrent,
     }
     const data = {
       canvases: this.state.canvases,
@@ -59,8 +74,8 @@ class App extends Component {
       <div className="App">
         <Switch>
           <Route path="/canvases" render={() => (
-            <Main canvases={this.state.canvases} 
-              addCanvas={this.addCanvas}/>
+            <Main {...functions} 
+              {...data}/>
             //<p className="App-intro">{this.state.response}</p>
           )} />
           <Route path="/sign-in" render={() => (
