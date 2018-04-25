@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import './App.css';
 import Main from './Main'
+import SignIn from './SignIn';
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      canvases: {
-      },
-      reponse: ''
+      uid: null,
+      canvases: {},
+      reponse: '',
+      current: this.newCanvas(),
     }
   }
   componentDidMount() {
@@ -24,21 +27,75 @@ class App extends Component {
     return body;
   };
 
-  addCanvas = (canvas) => {
+  newCanvas = () => {
+    return {
+        id: null,
+        title: '',
+    }
+  }
+
+  signedIn = () =>{
+    return (this.state.uid)
+  }
+
+  signOut = () => {
+    console.log("signing out!")
+  }
+
+  save = (canvas) => {
+    let redirect = false
     if(!canvas.id) {
-      canvas.id = `canvas-${new Date()}`
+      canvas.id = `canvas-${Date.now()}`
+      redirect = true
     }
     const canvases = {...this.state.canvases}
     canvases[canvas.id] = canvas
-    this.setState({ canvases })
+    this.setState({ 
+      canvases,
+      current: canvas,
+     })
+     if(redirect){
+       this.props.history.push(`/canvases/${canvas.id}`)
+     }
+  }
+
+  setCurrent = (canvas) => {
+    this.setState({current: canvas})
+  }
+
+  resetCurrent = () => {
+    this.setState({current: this.newCanvas()})
   }
 
   render() {
+    const functions = {
+      save: this.save,
+      setCurrent: this.setCurrent,
+      resetCurrent: this.resetCurrent,
+      signOut: this.signOut,
+    }
+    const data = {
+      canvases: this.state.canvases,
+      current: this.state.current,
+    }
+
     return (
       <div className="App">
-        <Main canvases={this.state.canvases} 
-          addCanvas={this.addCanvas}/>
-        <p className="App-intro">{this.state.response}</p>
+        <Switch>
+          <Route path="/canvases" render={() => (
+            this.signedIn() ? 
+              <Main {...functions} 
+                {...data}/>
+              //<p className="App-intro">{this.state.response}</p>
+              : <Redirect to="/sign-in" />
+          )} />
+          <Route path="/sign-in" render={() => (
+            !this.signedIn() ?
+              <SignIn />
+              : <Redirect to="/canvases" />
+          )} />
+          <Route render={() => <Redirect to="/canvases" />} />
+        </Switch>
       </div>
     );
   }

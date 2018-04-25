@@ -1,7 +1,8 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import './Header.css'
 
-const Header = () => {
+const Header = ({signOut}) => {
   return (
     <nav className="Header">
       <div className="logo">
@@ -10,18 +11,20 @@ const Header = () => {
       <h2>WhiteBoard</h2>
       
       <div className = "buttons">
-        <button className="AddNote">
-          Add Note
-        </button>
+        <Link to="/canvases" className="new-canvas">
+          <button className="Create">
+            Create
+          </button>
+        </Link>
         <button className="Join">
           Join
         </button>
-        <button className="Create">
-          Create
+        <button className="History">
+          History
         </button>
-        <select className="Dropdown">
-          <option value="show history??"> history </option>
-        </select>
+        <button className="SignOut" onClick={signOut}>
+          SignOut
+        </button>
       </div>
     </nav>
   )

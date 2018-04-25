@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom'
 import './CanvasForm.css'
 
 class CanvasForm extends Component {
-    constructor(props){
-        super(props)
+    componentWillReceiveProps(nextProps){
+        const newID = nextProps.match.params.id;
 
         this.state = {
             canvas: React.createRef(),
@@ -12,7 +12,18 @@ class CanvasForm extends Component {
             isActive: false
         }
 
-        //somehow get context
+        if(newID) {
+            if(newID !== this.props.current.id){
+                const canvas = nextProps.canvases[newID]
+                if(canvas){
+                    this.props.setCurrent(canvas)
+                } else if (Object.keys(nextProps.canvases).length > 0){
+                    this.props.history.push('/canvases')
+                }
+            }
+        } else if (this.props.current.id) {
+            this.props.resetCurrent()
+        }
     }
 
     newCanvas = () => {
@@ -78,6 +89,12 @@ class CanvasForm extends Component {
         console.log("Stopped drawing!");
     }
 
+    handleChanges = (ev) => {
+        const canvas = {...this.props.current}
+        canvas['title'] = ev.target.value
+        this.props.save(canvas) 
+    }
+
     render() {
         //ref={(c) => this.context = c.getContext('2d')}
         return (
@@ -88,7 +105,7 @@ class CanvasForm extends Component {
                                name = "title"
                                placeholder = "Canvas Title"
                                onChange={this.handleChanges}
-                               value = {this.state.canvas.title}
+                               value = {this.props.current.title}
                         />
                     </p>
                     <canvas ref="canvas" id="canvas-drawable" context=""onMouseDown={this.startDraw.bind(this)} onMouseMove={this.draw.bind(this)} onMouseUp={this.endDraw.bind(this)}> </canvas>

@@ -1,0 +1,11 @@
+* create database profiles;
+* use profiles;
+* create table humanity (username VARCHAR(32), password VARCHAR(32), history VARCHAR(32));
+** VARCHAR indicates variable length field values
+** history will be a file associated with each user, containing their edits line by line
+* create user 'profiler'@'127.0.0.1';
+* GRANT ALL PRIVILEGES ON profiles TO 'profiler'@'hostname' IDENTIFIED BY 'adatabaseforhumans^';
+* sudo mysql_setpermission
+* use profiles
+* insert into humanity values ('Noah, 'password', 'Noah.txt')
+* 

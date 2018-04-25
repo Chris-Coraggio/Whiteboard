@@ -1,18 +1,26 @@
 import React from 'react'
+import { Switch, Route } from 'react-router-dom'
 import Header from './Header'
 import CanvasList from './CanvasList'
 import CanvasForm from './CanvasForm'
 import './Main.css'
-import SignIn from './SignIn';
 
 const Main = (props) => {
     return (
         <div className = "Main">
-          <Header />
+          <Header signOut={props.signOut}/>
           <div className = "Content">
-              <CanvasList canvases={props.canvases}/>
-              <CanvasForm addCanvas={props.addCanvas}/>
-              {/* <SignIn /> */}
+            <CanvasList canvases={props.canvases}/>
+            <Switch>
+                <Route path="/canvases/:id" render={(navProps) => (
+                    <CanvasForm {...props}
+                        {...navProps}/>
+                )} />
+                <Route path="/canvases" render={(navProps) => (
+                    <CanvasForm {...props}
+                        {...navProps}/>
+                )} />
+            </Switch>
           </div>
         </div>
     )
