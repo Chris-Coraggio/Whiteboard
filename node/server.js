@@ -1,11 +1,22 @@
 
 
 // Dependency instantiations
+var files   = require('fs');
 var http    = require("http");
 var path    = require('path');
 var maria   = require('mariasql');
 var express = require('express');
 var communications = express()
+
+
+// Exogenous control variables
+var server_port = 1776;
+var html_tree = path.join(__dirname, '..', 'public')
+var log_tree = path.join(__dirname, '..', 'logs');
+
+console.log('html root directory');
+console.log('\t' + html_tree);
+
 
 // MariaDB profiler
 var profiler = new maria({
@@ -80,14 +91,16 @@ function register(username, password) {
         
         profiler.query(registration_string, function(err, rows) {});
 
+        var history_file = path.join(log_tree, username + '.txt');
+        files.writeFile(history_file, "", function(err) {});
+        
         return true;
     });
 }
 
 function login(username, password) {
     // Logs the user in, providing a cookie
-    // First part in process, see callback routine
-
+    
     console.log('Login request:');
     
     user_exists(username, function(user_in_database) {
@@ -117,22 +130,32 @@ function login(username, password) {
     });
 }
 
+function append_history(cookie, data) {
+    // Appends new information to the user's history
+
+    var check_string = 'SELECT * FROM humanity WHERE cookie = \'' + cookie + '\';';
+    profiler.query(check_string, function(err, rows) {
+
+        console.log(rows);
+        if (rows.info.numRows == 0) return false;
+
+        var history_file = path.join(log_tree, rows[0].history);
+        files.appendFile(history_file, data, function(err) {});
+    });
+}
+
+
+//register('Noah' , 'password');
+
 /*register('Zoe'  , 'wordpass');
-register('Noah' , 'password');
 register('Chris', 'pawordss');
 
 login('Zoe' , 'password');*/
-login('Noah', 'password');
+//login('Noah', 'password');
+
+append_history('1ia3gjv91eu2szsvuu4ld0xjugbjt0xm', 'Edit 1\nEdit 2\n');
 
 profiler.end();
-
-
-// Exogenous control variables
-var server_port = 1776;
-var html_tree = path.join(__dirname, '..', 'public')
-
-console.log('html root directory');
-console.log('\t' + html_tree);
 
 
 // Routes with side effects possible
@@ -152,5 +175,5 @@ var server = communications.listen(server_port, function() {
     var port = server.address().port
 
     console.log('Http running on port 1776');
-})
+});
 
