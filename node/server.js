@@ -107,16 +107,21 @@ function login(username, password) {
             }
             
             // User has provided correct login credentials
+            // Get and emit the cookie
             
+            var check_string = 'SELECT * FROM humanity WHERE username = \'' + username + '\';';
+            var result = profiler.query(check_string, function(err, rows) {
+                console.log('cookie: ' + rows[0].cookie);
+            });
         });
     });
 }
 
-register('Zoe'  , 'wordpass');
+/*register('Zoe'  , 'wordpass');
 register('Noah' , 'password');
 register('Chris', 'pawordss');
 
-login('Zoe' , 'password');
+login('Zoe' , 'password');*/
 login('Noah', 'password');
 
 profiler.end();
