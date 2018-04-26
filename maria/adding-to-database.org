@@ -1,0 +1,7 @@
+
+
+* create table canvasses (id VARCHAR(32), title VARCHAR(32), plots VARCHAR(32));
+** creates the three-entried database
+** all entries are strings
+* 
+
