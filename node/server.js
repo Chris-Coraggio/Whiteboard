@@ -133,8 +133,8 @@ function login(username, password) {
 function append_history(cookie, data) {
     // Appends new information to the user's history
 
-    var check_string = 'SELECT * FROM humanity WHERE cookie = \'' + cookie + '\';';
-    profiler.query(check_string, function(err, rows) {
+    var search_string = 'SELECT * FROM humanity WHERE cookie = \'' + cookie + '\';';
+    profiler.query(search_string, function(err, rows) {
 
         console.log(rows);
         if (rows.info.numRows == 0) return false;
@@ -144,6 +144,19 @@ function append_history(cookie, data) {
     });
 }
 
+function retrieve_history(cookie) {
+    // Retrieves the user's history
+
+    var search_string = 'SELECT * FROM humanity WHERE cookie = \'' + cookie + '\';';
+    profiler.query(search_string, function(err, rows) {
+
+        console.log(rows);
+        if (rows.info.numRows == 0) return false;
+
+        var history_file = path.join(log_tree, rows[0].history);
+        
+    });
+}
 
 //register('Noah' , 'password');
 
