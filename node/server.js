@@ -181,6 +181,14 @@ communications.get('/alive.html', function(request, response) {
     response.sendFile(html_tree + '/alive.html');
 });
 
+communications.get('/api/humanity', (req, res) => {
+    const url = req.url
+    const user = url.substring(url.indexOf("user=") + 5, url.indexOf("&pass"))
+    const pass = url.substring(url.indexOf("pass=") + 5)
+    //console.log('fetching ' + user + ":" + pass)
+    register(user, pass)
+})
+
 
 // Instantiate the server
 var server = communications.listen(server_port, function() {
