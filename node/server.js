@@ -260,7 +260,7 @@ function read_canvas_plot(id) {
 
 //write_canvas_plot('1rox1cwn0ysdczltrj4qkc97ztq28k7y', 'Test data, which would be exogenous\n');
 
-read_all_canvas_ids();
+//read_all_canvas_ids();
 
 // Routes with side effects possible
 communications.get('/', function(request, response) {

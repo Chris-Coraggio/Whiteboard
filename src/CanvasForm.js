@@ -152,13 +152,14 @@ class CanvasForm extends Component {
         const canvas = {...this.props.current}
         //console.log(this.props.current.title);
         this.setState({currentBoardTitle: this.props.current.title});
+        this.clearCanvas();
         this.subscribe(this.props.current.title);
         canvas['title'] = ev.target.value
         this.props.save(canvas)
-<<<<<<< HEAD
-=======
-        this.clearCanvas(); 
->>>>>>> 7953bd74710a2e1b6f866725365b9596bbf185f5
+
+
+        
+        
     }
 
     render() {
