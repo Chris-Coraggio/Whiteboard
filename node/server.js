@@ -241,7 +241,6 @@ write_canvas_plot('1rox1cwn0ysdczltrj4qkc97ztq28k7y', 'Test data, which would be
 
 
 
-profiler.end();
 
 
 // Routes with side effects possible
@@ -271,3 +270,6 @@ var server = communications.listen(server_port, function() {
     console.log('Http running on port 1776');
 });
 
+
+// Cleanup?
+profiler.end();
