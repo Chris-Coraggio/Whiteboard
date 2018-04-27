@@ -212,8 +212,7 @@ function write_canvas_plot(id, data) {
         }
         
         var canvas_file = path.join(canvas_tree, rows[0].plots);
-        console.log(canvas_file);
-        files.appendFile(canvas_file, data, function(err) {});
+        files.writeFile(canvas_file, data, function(err) {});
     });
 }
 
@@ -237,7 +236,7 @@ function read_canvas_plot(id) {
 create_canvas('Test Canvas');
 create_canvas('Best Canvas');
 
-write_canvas_plot('1rox1cwn0ysdczltrj4qkc97ztq28k7y', 'Test data, which would be exogenous');
+write_canvas_plot('1rox1cwn0ysdczltrj4qkc97ztq28k7y', 'Test data, which would be exogenous\n');
 
 
 
