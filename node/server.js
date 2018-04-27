@@ -248,7 +248,7 @@ function read_canvas_plot(id) {
         }
 
         var canvas_file = path.join(canvas_tree, rows[0].plots);
-        files.readFile(canvas_file, data, function(err,data) {
+        files.readFile(canvas_file, function(err,data) {
             return data;
         });
         
