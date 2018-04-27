@@ -150,12 +150,15 @@ class CanvasForm extends Component {
 
     handleChanges = (ev) => {
         const canvas = {...this.props.current}
-        console.log(this.props.current.title);
-        this.setState({currentBoardTitle: this.props.current.title});
-        this.subscribe(this.props.current.title);
         canvas['title'] = ev.target.value
         this.props.save(canvas)
+    }
+
+    handleBoardNameChange = (ev) => {
+        console.log(this.props.current.title);
+        this.setState({currentBoardTitle: this.props.current.title});
         this.clearCanvas(); 
+        this.subscribe(this.props.current.title);
     }
 
     render() {
@@ -170,6 +173,7 @@ class CanvasForm extends Component {
                                onChange={this.handleChanges}
                                value = {this.props.current.title}
                         />
+                        <button name="submitBoardName" onClick={this.handleBoardNameChange.bind(this)}>Submit</button>
                     </p>
                     <canvas ref="canvas" id="canvas-drawable" 
                         onMouseDown={this.startDraw.bind(this)} 
