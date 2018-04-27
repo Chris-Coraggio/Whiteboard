@@ -15,4 +15,4 @@ Node.js - Server functionality
 React - Framework for the web canvas  
 PubNub - An api for concurrent messaging  
 
-![](Whiteboard Screenshot.png)
+![](Whiteboard.png)
