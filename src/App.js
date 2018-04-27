@@ -39,7 +39,8 @@ class App extends Component {
   }
 
   signOut = () => {
-    console.log("signing out!")
+    //console.log("signing out!")
+    this.setState({uid: null})
   }
 
   getUserFromLocalStorage = () => {

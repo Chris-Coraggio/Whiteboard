@@ -15,7 +15,7 @@ class SignIn extends Component {
     authenticate = async () => {
         //console.log("user: " + this.state.user)
         //console.log("pass: " + this.state.pass)
-        const res = fetch(`/api/humanity?user=${this.state.user}&pass=${this.state.pass}`)
+        fetch(`/api/humanity?user=${this.state.user}&pass=${this.state.pass}`)
             .then(res => res.json().then(data => {
                 console.log("data", JSON.stringify(data, null, 4));
                 this.props.setUser(JSON.stringify(data.cookie, null, 4))
