@@ -13,4 +13,4 @@ Whiteboard brings the efficiency of collaboration to the freedom of drawing. Use
 MariaDB - Opensource mysql database  
 Node.js - Server functionality  
 React - Framework for the web canvas  
-Pubnub - An API to help facilitate multiplayer drawing  
+
