@@ -11,10 +11,11 @@ class SignIn extends Component {
         }
     }
 
-    authenticate = () => {
+    authenticate = async () => {
         //console.log("user: " + this.state.user)
         //console.log("pass: " + this.state.pass)
-        fetch(`/api/humanity?user=${this.state.user}&pass=${this.state.pass}`)
+        const res = await fetch(`/api/humanity?user=${this.state.user}&pass=${this.state.pass}`)
+        console.log(res.cookie)
     }
 
     handleChangeUser = (ev) => {

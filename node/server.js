@@ -98,7 +98,7 @@ function register(username, password) {
     });
 }
 
-function login(username, password) {
+function login(username, password, res) {
     // Logs the user in, providing a cookie
     
     console.log('Login request:');
@@ -125,6 +125,7 @@ function login(username, password) {
             var check_string = 'SELECT * FROM humanity WHERE username = \'' + username + '\';';
             var result = profiler.query(check_string, function(err, rows) {
                 console.log('cookie: ' + rows[0].cookie);
+                res.send({cookie: rows[0].cookie})
             });
         });
     });
@@ -211,7 +212,7 @@ communications.get('/api/humanity', (req, res) => {
     const user = url.substring(url.indexOf("user=") + 5, url.indexOf("&pass"))
     const pass = url.substring(url.indexOf("pass=") + 5)
     //console.log('fetching ' + user + ":" + pass)
-    register(user, pass)
+    var cookie = login(user, pass, res)
 })
 
 
