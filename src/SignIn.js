@@ -6,14 +6,15 @@ class SignIn extends Component {
         super()
         
         this.state = {
-            user: "",
-            pass: "",
+            user: '',
+            pass: '',
         }
     }
 
     authenticate = () => {
-        console.log("user: ${this.state.user}")
-        console.log("pass: ${this.state.pass}")
+        //console.log("user: " + this.state.user)
+        //console.log("pass: " + this.state.pass)
+        fetch(`/api/humanity?user=${this.state.user}&pass=${this.state.pass}`)
     }
 
     handleChangeUser = (ev) => {
