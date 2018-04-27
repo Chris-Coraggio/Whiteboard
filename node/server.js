@@ -170,7 +170,9 @@ register('chris', 'chris');
 
 /*register('Noah' , 'password');
 
+
 register('Zoe'  , 'wordpass');
+
 
 
 login('Zoe' , 'password');*/
