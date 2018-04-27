@@ -158,15 +158,40 @@ function retrieve_history(cookie) {
     });
 }
 
-//register('Noah' , 'password');
+/*register('Noah' , 'password');
 
-/*register('Zoe'  , 'wordpass');
+register('Zoe'  , 'wordpass');
 register('Chris', 'pawordss');
 
 login('Zoe' , 'password');*/
 //login('Noah', 'password');
 
 append_history('1ia3gjv91eu2szsvuu4ld0xjugbjt0xm', 'Edit 1\nEdit 2\n');
+
+
+
+function create_canvass(title) {
+    // Creates a new canvass
+
+    var check_string = 'SELECT 1 FROM canvasses WHERE title = \'' + title + '\';';
+    profiler.query(check_string, function(err, rows) {
+
+        if (rows.info.numRows > 0) return;   // Canvass already exists
+
+        // Canvass does not exist, create it now
+        var creation_string;
+        creation_string  = 'INSERT INTO canvasses VALUES (\''
+            + make_cookie() +  '\', \''
+            + title +          '\', \''
+            + title + '.txt' + '\');';
+
+        profiler.query(creation_string, function(err, rows) {
+            // Could be used to emit the canvas id
+        });
+    });
+}
+
+create_canvass('Test Canvass');
 
 profiler.end();
 
