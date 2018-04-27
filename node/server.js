@@ -198,7 +198,7 @@ function create_canvas(title, id) {
             //update where the id is already set
             var creation_string;
             creation_string = 'UPDATE canvases SET title = \'' 
-                + title + '\' WHERE id = \'' + id + '\';';
+                + title + '\' plots = \'' + title + '.txt\' WHERE id = \'' + id + '\';';
             console.log(creation_string)
             profiler.query(creation_string, function(err, rows) {
                 
