@@ -50,9 +50,10 @@ class App extends Component {
     this.setState({ uid })
   }
 
-  setUser = (user) => {
-    localStorage.setItem('uid', user.uid)
-    this.setState({ uid: user.uid })
+  setUser = (cookie) => {
+    localStorage.setItem('uid', cookie)
+    this.setState({ uid: cookie })
+    console.log(this.state.uid)
   }
 
   save = (canvas) => {
@@ -86,6 +87,7 @@ class App extends Component {
       setCurrent: this.setCurrent,
       resetCurrent: this.resetCurrent,
       signOut: this.signOut,
+      setUser: this.setUser,
     }
     const data = {
       canvases: this.state.canvases,
@@ -104,7 +106,7 @@ class App extends Component {
           )} />
           <Route path="/sign-in" render={() => (
             !this.signedIn() ?
-              <SignIn />
+              <SignIn {...functions}/>
               : <Redirect to="/canvases" />
           )} />
           <Route render={() => <Redirect to="/canvases" />} />

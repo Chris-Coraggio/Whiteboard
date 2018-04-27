@@ -114,7 +114,7 @@ function login(username, password, res) {
         
         // User is definitely new, check their login password before adding
 
-        check_password(username, password, function(password_correct) {
+        return check_password(username, password, function(password_correct) {
 
             if (!password_correct) {
                 console.log('password was incorrect');
@@ -127,7 +127,8 @@ function login(username, password, res) {
             var check_string = 'SELECT * FROM humanity WHERE username = \'' + username + '\';';
             profiler.query(check_string, function(err, rows) {
                 console.log('cookie: ' + rows[0].cookie);
-                res.send({cookie: rows[0].cookie})
+                //res.send('hello world!')
+                res.send({'cookie': rows[0].cookie})
             });
         });
     });
@@ -239,11 +240,6 @@ create_canvas('Best Canvas');
 
 write_canvas_plot('1rox1cwn0ysdczltrj4qkc97ztq28k7y', 'Test data, which would be exogenous\n');
 
-
-
-
-
-
 // Routes with side effects possible
 communications.get('/', function(request, response) {
     console.log(html_tree + '/index.html');
@@ -259,7 +255,7 @@ communications.get('/api/humanity', (req, res) => {
     const user = url.substring(url.indexOf("user=") + 5, url.indexOf("&pass"))
     const pass = url.substring(url.indexOf("pass=") + 5)
     //console.log('fetching ' + user + ":" + pass)
-    var cookie = login(user, pass, res)
+    login(user, pass, res)
 })
 
 
