@@ -26,3 +26,12 @@ input[name="title"] {
 input[name="title"] {
     outline: none;
 }
+
+button {
+    border: none;
+    font-size: 200%;
+    font-family: "Fauna One";
+    color: #008BF8;
+    font-weight: 400;
+    width: 100%;
+}
