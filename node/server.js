@@ -6,7 +6,7 @@ var http    = require("http");
 var path    = require('path');
 var maria   = require('mariasql');
 var express = require('express');
-var communications = express()
+var communications = express();
 
 
 // Exogenous control variables
@@ -96,7 +96,7 @@ function register(username, password) {
         var history_file = path.join(log_tree, username + '.txt');
         files.writeFile(history_file, "", function(err) {});
         
-        return true;
+        return;
     });
 }
 
@@ -118,7 +118,7 @@ function login(username, password, res) {
 
             if (!password_correct) {
                 console.log('password was incorrect');
-                return false; // Could call error handling function instead
+                return; // Could call error handling function instead
             }
             
             // User has provided correct login credentials
@@ -158,7 +158,7 @@ function retrieve_history(cookie) {
 
         if (rows.info.numRows == 0) {
             console.log('tried to retrieve history from user who does not exist');
-            return false;
+            return;
         }
             
         var history_file = path.join(log_tree, rows[0].history);
@@ -182,10 +182,10 @@ login('Zoe' , 'password');*/
 
 function create_canvas(title, id) {
     // Creates a new canvas
-
+    
     var check_string = 'SELECT 1 FROM canvases WHERE id = \'' + id + '\';';
     profiler.query(check_string, function(err, rows) {
-
+        
         if (rows.info.numRows > 0) {
             console.log('Tried to make canvas that already exists');
             //update the canvas if one with the same id already exists
@@ -193,7 +193,7 @@ function create_canvas(title, id) {
             creation_string = 'UPDATE canvases SET title=' 
                 + title + " WHERE id=" + id + ";";
             profiler.query(creation_string, function(err, rows) {
-
+                
             })
             return;   // Canvas already exists
         }
@@ -204,7 +204,7 @@ function create_canvas(title, id) {
             + id +  '\', \''
             + title +          '\', \''
             + title + '.txt' + '\');';
-
+        
         profiler.query(creation_string, function(err, rows) {
             // Could be used to emit the canvas id
         });
@@ -212,7 +212,7 @@ function create_canvas(title, id) {
 }
 
 function write_canvas_plot(id, data) {
-    // Destructiively writes data to the canvas file
+    // Destructively writes data to the canvas file
     
     var search_string = 'SELECT * FROM canvases WHERE id = \'' + id + '\';';
     profiler.query(search_string, function(err, rows) {
@@ -247,10 +247,28 @@ function read_canvas_plot(id) {
     });
 }
 
-create_canvas('Test Canvas');
-create_canvas('Best Canvas');
+function read_all_canvas_ids() {
+    // emits all of the canvas ids
+
+    var query_string = 'SELECT * FROM canvases;';
+    profiler.query(query_string, function(err, rows) {
+
+        if (rows.info.numRows == 0) {
+            console.log('No canvases are in the database');
+            return;
+        }
+
+        console.log(rows);
+
+    });
+}
+
+create_canvas('Test Canvas', '1rox1cwn0ysdczltrj4qkc97ztq28k7y');
+create_canvas('Best Canvas', 'ogy2f2pficctwsuu19g12sklqzl5vpx0');
 
 write_canvas_plot('1rox1cwn0ysdczltrj4qkc97ztq28k7y', 'Test data, which would be exogenous\n');
+
+read_all_canvas_ids();
 
 // Routes with side effects possible
 communications.get('/', function(request, response) {
@@ -268,13 +286,13 @@ communications.get('/api/humanity', (req, res) => {
     const pass = url.substring(url.indexOf("pass=") + 5)
     //console.log('fetching ' + user + ":" + pass)
     login(user, pass, res)
-})
+});
 
 communications.get('/api/canvases', (req, res) => {
     const url = req.url
     const title = url.substring(url.indexOf("title=") + 6)
     create_canvas(title)
-})
+});
 
 communications.get('/api/publish_canvas', (req, res) => {
     console.log("Start of publish_canvas");
