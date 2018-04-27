@@ -2,20 +2,25 @@ import React, { Component } from 'react'
 import './SignIn.css'
 
 class SignIn extends Component {
-    constructor(){
-        super()
+    constructor(props){
+        super(props)
         
         this.state = {
             user: '',
             pass: '',
+            cookie: '',
         }
     }
 
     authenticate = async () => {
         //console.log("user: " + this.state.user)
         //console.log("pass: " + this.state.pass)
-        const res = await fetch(`/api/humanity?user=${this.state.user}&pass=${this.state.pass}`)
-        console.log(res.cookie)
+        fetch(`/api/humanity?user=${this.state.user}&pass=${this.state.pass}`)
+            .then(res => res.json().then(data => {
+                console.log("data", JSON.stringify(data, null, 4));
+                this.props.setUser(JSON.stringify(data.cookie, null, 4))
+                //this.setState({cookie: JSON.stringify(data.cookie, null, 4)})
+              }))
     }
 
     handleChangeUser = (ev) => {
