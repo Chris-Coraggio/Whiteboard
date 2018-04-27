@@ -59,7 +59,7 @@ function make_cookie() {
     
     var cookie = '';
     var alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789';
-
+    
     for (var i = 0; i < 32; i++) {
         cookie += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
     }
@@ -70,11 +70,11 @@ function make_cookie() {
 function register(username, password) {
     // Adds the user to the database
     // First part in process, see callback routine
-
+    
     console.log('Registration request:');
     
     user_exists(username, function(user_already_present) {
-
+        
         if (user_already_present) {
             console.log('\tUser already registered');
             return;  // Could call error handling function instead
@@ -95,8 +95,6 @@ function register(username, password) {
 
         var history_file = path.join(log_tree, username + '.txt');
         files.writeFile(history_file, "", function(err) {});
-        
-        return true;
     });
 }
 
@@ -106,19 +104,19 @@ function login(username, password, res) {
     console.log('Login request:');
     
     user_exists(username, function(user_in_database) {
-
+        
         if (!user_in_database) {
             console.log('\tUser not registered');
             return;  // Could call error handling function instead
         }
         
         // User is definitely new, check their login password before adding
-
+        
         check_password(username, password, function(password_correct) {
-
+            
             if (!password_correct) {
                 console.log('password was incorrect');
-                return false; // Could call error handling function instead
+                return; // Could call error handling function instead
             }
             
             // User has provided correct login credentials
@@ -127,7 +125,7 @@ function login(username, password, res) {
             var check_string = 'SELECT * FROM humanity WHERE username = \'' + username + '\';';
             profiler.query(check_string, function(err, rows) {
                 console.log('cookie: ' + rows[0].cookie);
-                res.send({cookie: rows[0].cookie})
+                res.send({cookie: rows[0].cookie});
             });
         });
     });
@@ -135,15 +133,15 @@ function login(username, password, res) {
 
 function append_history(cookie, data) {
     // Appends new information to the user's history
-
+    
     var search_string = 'SELECT * FROM humanity WHERE cookie = \'' + cookie + '\';';
     profiler.query(search_string, function(err, rows) {
-
+        
         if (rows.info.numRows == 0) {
             console.log('tried to write history to user who does not exist');
             return;
         }
-            
+        
         var history_file = path.join(log_tree, rows[0].history);
         files.appendFile(history_file, data, function(err) {});
     });
@@ -151,15 +149,15 @@ function append_history(cookie, data) {
 
 function retrieve_history(cookie) {
     // Retrieves the user's history
-
+    
     var search_string = 'SELECT * FROM humanity WHERE cookie = \'' + cookie + '\';';
     profiler.query(search_string, function(err, rows) {
-
+        
         if (rows.info.numRows == 0) {
             console.log('tried to retrieve history from user who does not exist');
-            return false;
+            return;
         }
-            
+        
         var history_file = path.join(log_tree, rows[0].history);
         
     });
@@ -238,7 +236,7 @@ create_canvas('Test Canvas');
 create_canvas('Best Canvas');
 
 write_canvas_plot('1rox1cwn0ysdczltrj4qkc97ztq28k7y', 'Test data, which would be exogenous\n');
-
+write_canvas_plot('ogy2f2pficctwsuu19g12sklqzl5vpx0', 'The other plot gets different data\n');
 
 
 
@@ -260,7 +258,7 @@ communications.get('/api/humanity', (req, res) => {
     const pass = url.substring(url.indexOf("pass=") + 5)
     //console.log('fetching ' + user + ":" + pass)
     var cookie = login(user, pass, res)
-})
+});
 
 
 // Instantiate the server
