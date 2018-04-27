@@ -196,7 +196,7 @@ function create_canvas(title, id) {
             //update where the id is already set
             var creation_string;
             creation_string = 'UPDATE canvases SET title = \'' 
-                + title + '\' WHERE id = \'' + id + '\';';
+                + title + '\' plots = \'' + title + '.txt\' WHERE id = \'' + id + '\';';
             console.log(creation_string)
             profiler.query(creation_string, function(err, rows) {
                 
@@ -258,7 +258,7 @@ function read_canvas_plot(id) {
 
 //write_canvas_plot('1rox1cwn0ysdczltrj4qkc97ztq28k7y', 'Test data, which would be exogenous\n');
 
-read_all_canvas_ids();
+//read_all_canvas_ids();
 
 // Routes with side effects possible
 communications.get('/', function(request, response) {
