@@ -8,7 +8,6 @@ class SignIn extends Component {
         this.state = {
             user: '',
             pass: '',
-            cookie: '',
         }
     }
 

@@ -72,6 +72,7 @@ class App extends Component {
      if(redirect){
        this.props.history.push(`/canvases/${canvas.id}`)
      }
+     fetch(`/api/canvases?title=${canvas.title}&id=${canvas.id}`)
   }
 
   setCurrent = (canvas) => {

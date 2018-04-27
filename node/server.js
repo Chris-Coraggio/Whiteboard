@@ -178,21 +178,28 @@ login('Zoe' , 'password');*/
 
 
 
-function create_canvas(title) {
+function create_canvas(title, id) {
     // Creates a new canvas
 
-    var check_string = 'SELECT 1 FROM canvases WHERE title = \'' + title + '\';';
+    var check_string = 'SELECT 1 FROM canvases WHERE id = \'' + id + '\';';
     profiler.query(check_string, function(err, rows) {
 
         if (rows.info.numRows > 0) {
             console.log('Tried to make canvas that already exists');
+            //update the canvas if one with the same id already exists
+            var creation_string;
+            creation_string = 'UPDATE canvases SET title=' 
+                + title + " WHERE id=" + id + ";";
+            profiler.query(creation_string, function(err, rows) {
+
+            })
             return;   // Canvas already exists
         }
         
         // Canvas does not exist, create it now
         var creation_string;
         creation_string  = 'INSERT INTO canvases VALUES (\''
-            + make_cookie() +  '\', \''
+            + id +  '\', \''
             + title +          '\', \''
             + title + '.txt' + '\');';
 
@@ -256,6 +263,12 @@ communications.get('/api/humanity', (req, res) => {
     const pass = url.substring(url.indexOf("pass=") + 5)
     //console.log('fetching ' + user + ":" + pass)
     login(user, pass, res)
+})
+
+communications.get('/api/canvases', (req, res) => {
+    const url = req.url
+    const title = url.substring(url.indexOf("title=") + 6)
+    create_canvas(title)
 })
 
 
