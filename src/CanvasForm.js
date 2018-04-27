@@ -99,32 +99,53 @@ class CanvasForm extends Component {
         //console.log("Stopped drawing!");
     }
 
+    clearCanvas = () => {
+        var node = this.refs.canvas;
+        var context = node.getContext('2d');
+        context.clearRect(0, 0, this.refs.canvas.width, this.refs.canvas.height);
+    }
+
     publish = (board_name, plots) => {
-        this.pubnub.publish({
-            plots: plots,
-            channel: board_name,
-            message: "Yo"
-        });
-        console.log("Publishing");
-        // console.log(board_name);
-        // console.log(plots);
-        // console.log(this.pubnub);
+        // this.pubnub.publish({
+        //     plots: plots,
+        //     channel: board_name,
+        //     message: "Yo"
+        // });
+        // console.log("Publishing");
+        // // console.log(board_name);
+        // // console.log(plots);
+        // // console.log(this.pubnub);
+        fetch(`/api/publish_canvas?board_name=${this.props.current.id}&plots=${JSON.stringify(plots)}`);
+        console.log("Published!");
+        //write_canvas_plot(board_name, plots);
     }
 
     subscribe = () => {
-       if(console.log(this.state.currentBoardTitle) === ""){
-        console.log("No name");
-        return;
-    }
-       this.pubnub.subscribe({
-            channels: [this.state.currentBoardTitle],
-            withPresence: true
-        });
+    //    if(console.log(this.state.currentBoardTitle) === ""){
+    //     console.log("No name");
+    //     return;
+    // }
+    //    this.pubnub.subscribe({
+    //         channels: [this.state.currentBoardTitle],
+    //         withPresence: true
+    //     });
 
-       this.pubnub.getMessage(this.state.currentBoardTitle, (msg) => {
-            console.log("Received from room: " + msg);
-            this.drawFromDataStream(msg.plots);
-        });
+    //    // var plots = [];
+    //    // plots.push({x: x, y: y});
+
+    //    this.drawFromDataStream(); // this might break
+
+    //    this.pubnub.getMessage(this.state.currentBoardTitle, (msg) => {
+    //         console.log("Received from room: " + msg);
+    //         this.drawFromDataStream(msg.plots);
+    //     });
+        fetch(`/api/refresh_canvas?board_id=${this.props.current.id}`)
+             .then(res => res.json().then(data => {
+                console.log(JSON.parse(data.plots));
+                this.drawFromDataStream(JSON.parse(data.plots));
+                //this.setState({cookie: JSON.stringify(data.cookie, null, 4)})
+              }));
+        console.log("Subscribed!");
     }
 
     handleChanges = (ev) => {
@@ -133,7 +154,8 @@ class CanvasForm extends Component {
         this.setState({currentBoardTitle: this.props.current.title});
         this.subscribe(this.props.current.title);
         canvas['title'] = ev.target.value
-        this.props.save(canvas) 
+        this.props.save(canvas)
+        this.clearCanvas(); 
     }
 
     render() {

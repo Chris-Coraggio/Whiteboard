@@ -166,10 +166,12 @@ function retrieve_history(cookie) {
     });
 }
 
+register('chris', 'chris');
+
 /*register('Noah' , 'password');
 
 register('Zoe'  , 'wordpass');
-register('Chris', 'pawordss');
+
 
 login('Zoe' , 'password');*/
 //login('Noah', 'password');
@@ -238,6 +240,9 @@ function read_canvas_plot(id) {
         }
 
         var canvas_file = path.join(canvas_tree, rows[0].plots);
+        files.readFile(canvas_file, data, function(err,data) {
+            return data;
+        });
         
     });
 }
@@ -270,6 +275,25 @@ communications.get('/api/canvases', (req, res) => {
     const title = url.substring(url.indexOf("title=") + 6)
     create_canvas(title)
 })
+
+communications.get('/api/publish_canvas', (req, res) => {
+    console.log("Start of publish_canvas");
+    var url = req.url;
+    var plots = url.substring(url.indexOf("plots=") + 6);
+    var board_id = url.substring(url.indexOf("board_name=") + 11, url.indexOf("&plots="));
+    console.log("plots:   " + plots);
+    console.log("board_id:   " + board_id);
+    var data = write_canvas_plot(board_id, plots);
+    res.send({plots: data});
+    console.log("Wrote to board");
+});
+
+communications.get('/api/refresh_canvas', (req, res) => {
+    var url = req.url;
+    var board_id = url.substring(url.indexOf("board_id=") + 9);
+    read_canvas_plot(board_id);
+    console.log("Read from board");
+});
 
 
 // Instantiate the server
