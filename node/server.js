@@ -11,11 +11,13 @@ var communications = express()
 
 // Exogenous control variables
 var server_port = 1776;
-var html_tree = path.join(__dirname, '..', 'public')
-var log_tree = path.join(__dirname, '..', 'logs');
+var canvas_tree = path.join(__dirname, '..', 'canvas_data');
+var html_tree   = path.join(__dirname, '..', 'public');
+var log_tree    = path.join(__dirname, '..', 'logs');
 
-console.log('html root directory');
-console.log('\t' + html_tree);
+console.log('canvass root directory:\t' + canvas_tree);
+console.log('html root directory:\t'    + html_tree  );
+console.log('log root directory:\t'     + log_tree   );
 
 
 // MariaDB profiler
@@ -35,7 +37,7 @@ function user_exists(username, callback) {
     // Returns whether the user is in the database
     
     var check_string = 'SELECT 1 FROM humanity WHERE username = \'' + username + '\';';
-    var result = profiler.query(check_string, function(err, rows) {
+    profiler.query(check_string, function(err, rows) {
         callback(rows.info.numRows > 0);
     });
 }
@@ -47,7 +49,7 @@ function check_password(username, password, callback) {
     var check_string = 'SELECT 1 FROM humanity WHERE username = \''
         + username + '\' AND password = \'' + password + '\';'; 
     
-    var result = profiler.query(check_string, function(err, rows) {
+    profiler.query(check_string, function(err, rows) {
         callback(rows.info.numRows > 0);
     });
 }
@@ -123,7 +125,7 @@ function login(username, password, res) {
             // Get and emit the cookie
             
             var check_string = 'SELECT * FROM humanity WHERE username = \'' + username + '\';';
-            var result = profiler.query(check_string, function(err, rows) {
+            profiler.query(check_string, function(err, rows) {
                 console.log('cookie: ' + rows[0].cookie);
                 res.send({cookie: rows[0].cookie})
             });
@@ -137,9 +139,11 @@ function append_history(cookie, data) {
     var search_string = 'SELECT * FROM humanity WHERE cookie = \'' + cookie + '\';';
     profiler.query(search_string, function(err, rows) {
 
-        console.log(rows);
-        if (rows.info.numRows == 0) return false;
-
+        if (rows.info.numRows == 0) {
+            console.log('tried to write history to user who does not exist');
+            return;
+        }
+            
         var history_file = path.join(log_tree, rows[0].history);
         files.appendFile(history_file, data, function(err) {});
     });
@@ -151,9 +155,11 @@ function retrieve_history(cookie) {
     var search_string = 'SELECT * FROM humanity WHERE cookie = \'' + cookie + '\';';
     profiler.query(search_string, function(err, rows) {
 
-        console.log(rows);
-        if (rows.info.numRows == 0) return false;
-
+        if (rows.info.numRows == 0) {
+            console.log('tried to retrieve history from user who does not exist');
+            return false;
+        }
+            
         var history_file = path.join(log_tree, rows[0].history);
         
     });
@@ -167,21 +173,24 @@ register('Chris', 'pawordss');
 login('Zoe' , 'password');*/
 //login('Noah', 'password');
 
-append_history('1ia3gjv91eu2szsvuu4ld0xjugbjt0xm', 'Edit 1\nEdit 2\n');
+//append_history('1ia3gjv91eu2szsvuu4ld0xjugbjt0xm', 'Edit 1\nEdit 2\n');
 
 
 
-function create_canvass(title) {
-    // Creates a new canvass
+function create_canvas(title) {
+    // Creates a new canvas
 
-    var check_string = 'SELECT 1 FROM canvasses WHERE title = \'' + title + '\';';
+    var check_string = 'SELECT 1 FROM canvases WHERE title = \'' + title + '\';';
     profiler.query(check_string, function(err, rows) {
 
-        if (rows.info.numRows > 0) return;   // Canvass already exists
-
-        // Canvass does not exist, create it now
+        if (rows.info.numRows > 0) {
+            console.log('Tried to make canvas that already exists');
+            return;   // Canvas already exists
+        }
+        
+        // Canvas does not exist, create it now
         var creation_string;
-        creation_string  = 'INSERT INTO canvasses VALUES (\''
+        creation_string  = 'INSERT INTO canvases VALUES (\''
             + make_cookie() +  '\', \''
             + title +          '\', \''
             + title + '.txt' + '\');';
@@ -192,9 +201,47 @@ function create_canvass(title) {
     });
 }
 
-create_canvass('Test Canvass');
+function write_canvas_plot(id, data) {
+    // Destructiively writes data to the canvas file
+    
+    var search_string = 'SELECT * FROM canvases WHERE id = \'' + id + '\';';
+    profiler.query(search_string, function(err, rows) {
 
-profiler.end();
+        if (rows.info.numRows == 0) {
+            console.log('Tried to write to canvas that does not exist');
+            return;
+        }
+        
+        var canvas_file = path.join(canvas_tree, rows[0].plots);
+        files.writeFile(canvas_file, data, function(err) {});
+    });
+}
+
+function read_canvas_plot(id) {
+    // emits the canvas file
+
+    var search_string = 'SELECT * FROM canvases WHERE id = \'' + id + '\';';
+    profiler.query(search_string, function(err, rows) {
+
+        console.log(rows);
+        if (rows.info.numRows == 0) {
+            console.log('Tried to read canvas that does not exist');
+            return;
+        }
+
+        var canvas_file = path.join(canvas_tree, rows[0].plots);
+        
+    });
+}
+
+create_canvas('Test Canvas');
+create_canvas('Best Canvas');
+
+write_canvas_plot('1rox1cwn0ysdczltrj4qkc97ztq28k7y', 'Test data, which would be exogenous\n');
+
+
+
+
 
 
 // Routes with side effects possible
@@ -224,3 +271,6 @@ var server = communications.listen(server_port, function() {
     console.log('Http running on port 1776');
 });
 
+
+// Cleanup?
+profiler.end();
