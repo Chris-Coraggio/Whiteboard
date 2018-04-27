@@ -189,19 +189,26 @@ function create_canvas(title, id) {
         return;
     }
 
-    var check_string = 'SELECT 1 FROM canvases WHERE id = \'' + id + '\';';
+    var check_string = 'SELECT * FROM canvases WHERE id = \'' + id + '\';';
     profiler.query(check_string, function(err, rows) {
         
         if (rows.info.numRows > 0) {
             console.log('Tried to make canvas that already exists');
             //update the canvas if one with the same id already exists
             //update where the id is already set
+            console.log(rows);
+            console.log(rows[0].plots);
+            //copy the log from the old canvas to the new
+            var current_log = path.join(canvas_tree, rows[0].plots)
+            var new_log = path.join(canvas_tree, title + ".txt");
+            console.log(new_log);
+            files.createReadStream(current_log).pipe(files.createWriteStream(new_log));
             var creation_string;
             creation_string = 'UPDATE canvases SET title = \'' 
-                + title + '\' plots = \'' + title + '.txt\' WHERE id = \'' + id + '\';';
+                + title + '\', plots = \'' + title + '.txt\' WHERE id = \'' + id + '\';';
             console.log(creation_string)
             profiler.query(creation_string, function(err, rows) {
-                
+                console.log(err);
             })
             return;   // Canvas already exists
         }
