@@ -16,9 +16,9 @@ const Header = ({signOut}) => {
             Create
           </button>
         </Link>
-        <button className="Join">
+        {/* <button className="Join">
           Join
-        </button>
+        </button> */}
         <button className="History">
           History
         </button>

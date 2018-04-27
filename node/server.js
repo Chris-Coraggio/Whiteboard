@@ -103,12 +103,12 @@ function register(username, password) {
 function login(username, password, res) {
     // Logs the user in, providing a cookie
     
-    console.log('Login request:');
+    //console.log('Login request:');
     
     user_exists(username, function(user_in_database) {
 
         if (!user_in_database) {
-            console.log('\tUser not registered');
+            //console.log('\tUser not registered');
             return;  // Could call error handling function instead
         }
         
@@ -181,15 +181,21 @@ login('Zoe' , 'password');*/
 function create_canvas(title, id) {
     // Creates a new canvas
 
+    if(id == 'null'){
+        return;
+    }
+
     var check_string = 'SELECT 1 FROM canvases WHERE id = \'' + id + '\';';
     profiler.query(check_string, function(err, rows) {
 
         if (rows.info.numRows > 0) {
             console.log('Tried to make canvas that already exists');
             //update the canvas if one with the same id already exists
+            //update where the id is already set
             var creation_string;
-            creation_string = 'UPDATE canvases SET title=' 
-                + title + " WHERE id=" + id + ";";
+            creation_string = 'UPDATE canvases SET title = \'' 
+                + title + '\' WHERE id = \'' + id + '\';';
+            console.log(creation_string)
             profiler.query(creation_string, function(err, rows) {
 
             })
@@ -242,10 +248,10 @@ function read_canvas_plot(id) {
     });
 }
 
-create_canvas('Test Canvas');
-create_canvas('Best Canvas');
+// create_canvas('Test Canvas');
+// create_canvas('Best Canvas');
 
-write_canvas_plot('1rox1cwn0ysdczltrj4qkc97ztq28k7y', 'Test data, which would be exogenous\n');
+//write_canvas_plot('1rox1cwn0ysdczltrj4qkc97ztq28k7y', 'Test data, which would be exogenous\n');
 
 // Routes with side effects possible
 communications.get('/', function(request, response) {
@@ -267,8 +273,11 @@ communications.get('/api/humanity', (req, res) => {
 
 communications.get('/api/canvases', (req, res) => {
     const url = req.url
-    const title = url.substring(url.indexOf("title=") + 6)
-    create_canvas(title)
+    var title = url.substring(url.indexOf("title=") + 6, url.indexOf("&id="))
+    title = decodeURI(title)
+    const id = url.substring(url.indexOf("&id=") + 4)
+    //console.log('creating canvas ' + title + id)
+    create_canvas(title, id)
 })
 
 
