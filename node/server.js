@@ -167,10 +167,6 @@ function retrieve_history(cookie) {
 }
 
 /*register('Noah' , 'password');
-
-register('Zoe'  , 'wordpass');
-register('Chris', 'pawordss');
-
 login('Zoe' , 'password');*/
 //login('Noah', 'password');
 
