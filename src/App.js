@@ -14,6 +14,11 @@ class App extends Component {
       current: this.newCanvas(),
     }
   }
+
+  componentWillMount() {
+    this.getUserFromLocalStorage();
+  }
+
   componentDidMount() {
     this.callApi()
       .then(res => this.setState({ response: res.express }))
@@ -41,6 +46,7 @@ class App extends Component {
   signOut = () => {
     //console.log("signing out!")
     this.setState({uid: null})
+    localStorage.removeItem('uid')
   }
 
   getUserFromLocalStorage = () => {
@@ -72,15 +78,16 @@ class App extends Component {
      if(redirect){
        this.props.history.push(`/canvases/${canvas.id}`)
      }
-     fetch(`/api/canvases?title=${canvas.title}&id=${canvas.id}`)
   }
 
   setCurrent = (canvas) => {
     this.setState({current: canvas})
+    fetch(`/api/canvases?title=${canvas.title}&id=${canvas.id}`)
   }
 
-  resetCurrent = () => {
-    this.setState({current: this.newCanvas()})
+  resetCurrent = async () => {
+    fetch(`/api/canvases?title=${this.state.current.title}&id=${this.state.current.id}`).then(
+      this.setState({current: this.newCanvas()}))
   }
 
   render() {
