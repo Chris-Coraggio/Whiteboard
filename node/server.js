@@ -242,10 +242,28 @@ function read_canvas_plot(id) {
     });
 }
 
-create_canvas('Test Canvas');
-create_canvas('Best Canvas');
+function read_all_canvas_ids() {
+    // emits all of the canvas ids
+
+    var query_string = 'SELECT * FROM canvases;';
+    profiler.query(query_string, function(err, rows) {
+
+        if (rows.info.numRows == 0) {
+            console.log('No canvases are in the database');
+            return;
+        }
+
+        console.log(rows);
+
+    });
+}
+
+create_canvas('Test Canvas', '1rox1cwn0ysdczltrj4qkc97ztq28k7y');
+create_canvas('Best Canvas', 'ogy2f2pficctwsuu19g12sklqzl5vpx0');
 
 write_canvas_plot('1rox1cwn0ysdczltrj4qkc97ztq28k7y', 'Test data, which would be exogenous\n');
+
+read_all_canvas_ids();
 
 // Routes with side effects possible
 communications.get('/', function(request, response) {
